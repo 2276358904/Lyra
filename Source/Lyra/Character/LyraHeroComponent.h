@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Components/PawnComponent.h"
-#include "HeroComponent.generated.h"
+#include "LyraHeroComponent.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class LYRA_API UHeroComponent : public UPawnComponent
+class LYRA_API ULyraHeroComponent : public UPawnComponent
 {
 	GENERATED_BODY()
 	
