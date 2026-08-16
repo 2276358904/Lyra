@@ -7,3 +7,13 @@ ULyraHeroComponent::ULyraHeroComponent(const FObjectInitializer& ObjectInitializ
 {
 
 }
+
+void ULyraHeroComponent::BeginPlay()
+{
+
+}
+
+void ULyraHeroComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+
+}
