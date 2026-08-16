@@ -14,4 +14,6 @@ class LYRA_API ULyraHeroComponent : public UPawnComponent
 {
 	GENERATED_BODY()
 	
+public:
+	ULyraHeroComponent(const FObjectInitializer& ObjectInitializer);
 };

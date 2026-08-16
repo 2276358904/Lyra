@@ -3,3 +3,7 @@
 
 #include "Character/LyraHeroComponent.h"
 
+ULyraHeroComponent::ULyraHeroComponent(const FObjectInitializer& ObjectInitializer)
+{
+
+}
