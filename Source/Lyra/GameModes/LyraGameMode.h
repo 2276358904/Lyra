@@ -13,6 +13,8 @@ class ALyraGameMode : public AGameModeBase
 
 public:
 	ALyraGameMode();
+
+
 };
 
 
