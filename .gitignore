@@ -2,10 +2,7 @@
 # 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
 ################################################################################
 
-/.vs/Lyra/v17
-/.vs/Lyra
 /.vs
 /Intermediate
-/Saved/Logs
-/Binaries/Win64
-/Saved/Config
+/Saved
+/Binaries
