@@ -22,7 +22,8 @@ public class Lyra : ModuleRules
 				"InputCore", 
 				"HeadMountedDisplay", 
 				"EnhancedInput",
-                "ModularGameplay"
+                "ModularGameplay",
+				"GameplayTags"
             }
 		);
 	}

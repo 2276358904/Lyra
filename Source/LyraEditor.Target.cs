@@ -9,7 +9,11 @@ public class LyraEditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_1;
-		ExtraModuleNames.Add("Lyra");
-	}
+		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
+        ExtraModuleNames.AddRange(
+			new string[] { 
+				"Lyra", "LyraEditor" 
+			}
+		);
+    }
 }
