@@ -13,7 +13,7 @@ namespace LyraGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Gameplay_Input_Move, "Gameplay.Input.Move");
 	UE_DEFINE_GAMEPLAY_TAG(Gameplay_Input_Look, "Gameplay.Input.Look");
 	UE_DEFINE_GAMEPLAY_TAG(Gameplay_Input_Crouch, "Gameplay.Input.Crouch");
-	UE_DEFINE_GAMEPLAY_TAG(Gameplay_Input_Run, "Gameplay.Input.Run");
+	UE_DEFINE_GAMEPLAY_TAG(Gameplay_Input_AutoRun, "Gameplay.Input.AutoRun");
 
 	UE_DEFINE_GAMEPLAY_TAG(Gameplay_State_Crouching, "Gameplay.State.Crouching");
 	UE_DEFINE_GAMEPLAY_TAG(Gameplay_State_Running, "Gameplay.State.Running");

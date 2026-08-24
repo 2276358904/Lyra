@@ -1,22 +1,26 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "LyraCharacter.h"
-#include "Camera/CameraComponent.h"
-#include "Components/CapsuleComponent.h"
-#include "Components/InputComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "GameFramework/Controller.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
+#include "Character/LyraCharacter.h"
+#include "Character/LyraCharacterMovementComponent.h"
 
 
-//////////////////////////////////////////////////////////////////////////
-// ALyraCharacter
-
-ALyraCharacter::ALyraCharacter()
+ALyraCharacter::ALyraCharacter(const FObjectInitializer& ObjectInitializer):
+	Super(ObjectInitializer)
 {
 
+}
+
+void ALyraCharacter::ToggleCrouch()
+{
+	const ULyraCharacterMovementComponent* MovementComponent = CastChecked<ULyraCharacterMovementComponent>(GetCharacterMovement());
+	if (bIsCrouched || MovementComponent->bWantsToCrouch)
+	{
+		UnCrouch();
+	}
+	else if (MovementComponent->IsMovingOnGround())
+	{
+		Crouch();
+	}
 }
 
 

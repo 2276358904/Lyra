@@ -14,7 +14,7 @@ namespace LyraGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gameplay_Input_Move);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gameplay_Input_Look);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gameplay_Input_Crouch);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gameplay_Input_Run);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gameplay_Input_AutoRun);
 
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gameplay_State_Crouching);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gameplay_State_Running);

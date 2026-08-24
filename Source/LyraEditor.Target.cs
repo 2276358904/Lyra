@@ -12,7 +12,8 @@ public class LyraEditorTarget : TargetRules
 		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
         ExtraModuleNames.AddRange(
 			new string[] { 
-				"Lyra", "LyraEditor" 
+				"Lyra",
+				"LyraEditor"
 			}
 		);
     }

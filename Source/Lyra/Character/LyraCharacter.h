@@ -4,16 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "InputActionValue.h"
 #include "LyraCharacter.generated.h"
 
 
-UCLASS(config=Game)
+UCLASS(Config=Game)
 class ALyraCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
-	ALyraCharacter();
+	ALyraCharacter(const FObjectInitializer& ObjectInitializer);
+
+	void ToggleCrouch();
 };
 

@@ -10,3 +10,18 @@ ULyraPawnExtensionComponent::ULyraPawnExtensionComponent(const FObjectInitialize
 {
 
 }
+
+void ULyraPawnExtensionComponent::SetPawnData(const ULyraPawnData* InPawnData)
+{
+	APawn* Pawn = GetPawnChecked<APawn>();
+	if (Pawn->GetLocalRole() != ROLE_Authority)
+	{
+		return;
+	}
+	if (PawnData)
+	{
+		return;
+	}
+	PawnData = InPawnData;
+	CheckDefaultInitialization();
+}

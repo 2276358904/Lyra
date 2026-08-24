@@ -7,6 +7,9 @@
 #include "Components/GameFrameworkInitStateInterface.h"
 #include "LyraHeroComponent.generated.h"
 
+struct FLyraMappableConfigPair;
+struct FInputActionValue;
+
 /**
  * 
  */
@@ -41,4 +44,29 @@ public:
 
 	virtual void CheckDefaultInitialization() override;
 	//~ End IGameFrameworkInitStateInterface interface
+
+protected:
+	/**
+	 * Input Configs that should be added to this player when initializing the input. These configs
+	 * will NOT be registered with the settings because they are added at runtime. If you want the config
+	 * pair to be in the settings, then add it via the GameFeatureAction_AddInputConfig
+	 */
+	UPROPERTY(EditAnywhere)
+	TArray<FLyraMappableConfigPair> DefaultInputConfigs;
+
+protected:
+	virtual void InitializePlayerInput(UInputComponent* PlayerInputComponent);
+
+private:
+	void OnInputMove(const FInputActionValue& InputActionValue);
+
+	void OnInputLook(const FInputActionValue& InputActionValue);
+
+	void OnInputCrouch(const FInputActionValue& InputActionValue);
+
+	void OnInputAutoRun(const FInputActionValue& InputActionValue);
+
+	void OnAbilityInputTagPressed(FGameplayTag InputTag);
+
+	void OnAbilityInputTagReleased(FGameplayTag InputTag);
 };

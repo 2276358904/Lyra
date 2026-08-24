@@ -17,13 +17,16 @@ public class Lyra : ModuleRules
         PublicDependencyModuleNames.AddRange(
 			new string[] { 
 				"Core", 
-				"CoreUObject", 
-				"Engine", 
-				"InputCore", 
-				"HeadMountedDisplay", 
-				"EnhancedInput",
+				"CoreUObject",
+                "CommonUI",
+                "Engine",
+                "EnhancedInput",
+                "GameplayTags",
+                "GameplayAbilities",
+                "GameplayTasks",
+                "HeadMountedDisplay",
+                "InputCore", 
                 "ModularGameplay",
-				"GameplayTags"
             }
 		);
 	}

@@ -4,13 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "Components/PawnComponent.h"
+#include "Components/GameFrameworkInitStateInterface.h"
 #include "LyraPawnExtensionComponent.generated.h"
 
+class ULyraPawnData;
 /**
  * 
  */
 UCLASS()
-class LYRA_API ULyraPawnExtensionComponent : public UPawnComponent
+class LYRA_API ULyraPawnExtensionComponent : public UPawnComponent, public IGameFrameworkInitStateInterface
 {
 	GENERATED_BODY()
 
@@ -21,5 +23,15 @@ public:
 public:
 	ULyraPawnExtensionComponent(const FObjectInitializer& ObjectInitializer);
 
+	/** Gets the pawn data, which is used to specify pawn properties in data */
+	template <class T>
+	const T* GetPawnData() const { return Cast<T>(PawnData); }
 
+	/** Sets the current pawn data */
+	void SetPawnData(const ULyraPawnData* InPawnData);
+
+protected:
+	/** Pawn data used to create the pawn. Specified from a spawn function or on a placed instance. */
+	UPROPERTY(EditInstanceOnly, Category = "Lyra|Pawn")
+	TObjectPtr<const ULyraPawnData> PawnData;
 };
