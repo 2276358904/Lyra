@@ -28,11 +28,9 @@ public:
 	/** Gets the ability target data associated with the given ability handle and activation info */
 	void GetAbilityTargetData(const FGameplayAbilitySpecHandle AbilityHandle, FGameplayAbilityActivationInfo ActivationInfo, FGameplayAbilityTargetDataHandle& OutTargetDataHandle);
 
-	//~UActorComponent interface
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	//~UActorComponent interface
-
 	//~UAbilitySystemComponent interface
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	virtual void InitAbilityActorInfo(AActor* InOwnerActor, AActor* InAvatarActor) override;
 	//~End of UAbilitySystemComponent interface
 

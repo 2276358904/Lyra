@@ -23,6 +23,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Character")
 	bool GetIsAutoRunning() const;
 
+	//~APlayerController interface
+	virtual void PostProcessInput(const float DeltaTime, const bool bGamePaused) override;
+	//~End of APlayerController interface
+
 private:
 	void OnStartAutoRun();
 

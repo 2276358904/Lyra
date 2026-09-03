@@ -14,6 +14,11 @@ ULyraGameplayAbility::ULyraGameplayAbility(const FObjectInitializer& ObjectIniti
 	ActivationPolicy = ELyraAbilityActivationPolicy::OnInputTriggered;
 }
 
+ELyraAbilityActivationPolicy ULyraGameplayAbility::GetActivationPolicy() const
+{
+	return ActivationPolicy;
+}
+
 void ULyraGameplayAbility::TryActivateAbilityOnSpawn(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) const
 {
 	const bool bIsPredicting = (Spec.ActivationInfo.ActivationMode == EGameplayAbilityActivationMode::Predicting);

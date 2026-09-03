@@ -25,4 +25,12 @@ namespace LyraGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gameplay_Event_Death);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gameplay_Event_Reset);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gameplay_Event_RequestReset);
+
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gameplay_Damage);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gameplay_DamageImmunity);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gameplay_DamageSelfDestruct);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gameplay_DamageFellOutOfWorld);
+
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gameplay_SetByCaller_Damage);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gameplay_SetByCaller_Heal);
 };

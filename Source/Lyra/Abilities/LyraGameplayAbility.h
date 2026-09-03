@@ -35,6 +35,8 @@ class LYRA_API ULyraGameplayAbility : public UGameplayAbility
 public:
 	ULyraGameplayAbility(const FObjectInitializer& ObjectInitializer);
 
+	ELyraAbilityActivationPolicy GetActivationPolicy() const;
+
 	void TryActivateAbilityOnSpawn(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) const;
 
 	//~UGameplayAbility interface

@@ -2,6 +2,7 @@
 
 
 #include "Character/LyraPawnExtensionComponent.h"
+#include "Abilities/LyraAbilitySystemComponent.h"
 
 const FName ULyraPawnExtensionComponent::NAME_ActorFeatureName("PawnExtension");
 
@@ -24,4 +25,9 @@ void ULyraPawnExtensionComponent::SetPawnData(const ULyraPawnData* InPawnData)
 	}
 	PawnData = InPawnData;
 	CheckDefaultInitialization();
+}
+
+UAbilitySystemComponent* ULyraPawnExtensionComponent::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
 }

@@ -3,3 +3,7 @@
 
 #include "Player/LyraPlayerState.h"
 
+UAbilitySystemComponent* ALyraPlayerState::GetAbilitySystemComponent() const
+{
+    return AbilitySystemComponent;
+}

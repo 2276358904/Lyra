@@ -3,3 +3,8 @@
 
 #include "Abilities/LyraAttributeSet.h"
 
+ULyraAttributeSet::ULyraAttributeSet(const FObjectInitializer& ObjectInitializer):
+	Super(ObjectInitializer)
+{
+
+}

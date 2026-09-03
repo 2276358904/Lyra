@@ -3,6 +3,7 @@
 
 #include "Character/LyraHeroComponent.h"
 #include "LyraGameplayTags.h"
+#include "Abilities/LyraAbilitySystemComponent.h"
 #include "Character/LyraCharacter.h"
 #include "Character/LyraPawnData.h"
 #include "Character/LyraPawnExtensionComponent.h"
@@ -118,10 +119,12 @@ void ULyraHeroComponent::HandleChangeInitState(UGameFrameworkComponentManager* M
 
 void ULyraHeroComponent::OnActorInitStateChanged(const FActorInitStateChangedParams& Params)
 {
+
 }
 
 void ULyraHeroComponent::CheckDefaultInitialization()
 {
+
 }
 
 void ULyraHeroComponent::InitializePlayerInput(UInputComponent* PlayerInputComponent)
@@ -261,8 +264,38 @@ void ULyraHeroComponent::OnInputAutoRun(const FInputActionValue& InputActionValu
 
 void ULyraHeroComponent::OnAbilityInputTagPressed(FGameplayTag InputTag)
 {
+	const APawn* Pawn = GetPawn<APawn>();
+	if (!Pawn)
+	{
+		return;
+	}
+	const ULyraPawnExtensionComponent* PawnExtensionComponent = Pawn->FindComponentByClass<ULyraPawnExtensionComponent>();
+	if (!PawnExtensionComponent)
+	{
+		return;
+	}
+	ULyraAbilitySystemComponent* AbilitySystemComponent = Cast<ULyraAbilitySystemComponent>(PawnExtensionComponent->GetAbilitySystemComponent());
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->AbilityInputTagPressed(InputTag);
+	}
 }
 
 void ULyraHeroComponent::OnAbilityInputTagReleased(FGameplayTag InputTag)
 {
+	const APawn* Pawn = GetPawn<APawn>();
+	if (!Pawn)
+	{
+		return;
+	}
+	const ULyraPawnExtensionComponent* PawnExtensionComponent = Pawn->FindComponentByClass<ULyraPawnExtensionComponent>();
+	if (!PawnExtensionComponent)
+	{
+		return;
+	}
+	ULyraAbilitySystemComponent* AbilitySystemComponent = Cast<ULyraAbilitySystemComponent>(PawnExtensionComponent->GetAbilitySystemComponent());
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->AbilityInputTagReleased(InputTag);
+	}
 }
