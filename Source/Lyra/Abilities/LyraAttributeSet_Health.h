@@ -23,7 +23,7 @@ public:
 	FLyraAttributeEvent OnOutOfHealth;
 
 public:
-	ULyraAttributeSet_Health(const FObjectInitializer& ObjectInitializer);
+	ULyraAttributeSet_Health(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	ATTRIBUTE_ACCESSORS(ULyraAttributeSet_Health, Health);
 	ATTRIBUTE_ACCESSORS(ULyraAttributeSet_Health, MaxHealth);
@@ -39,7 +39,7 @@ protected:
 
 private:
 	// The current health attribute.  The health will be capped by the max health attribute.  Health is hidden from modifiers so only executions can modify it.
-	UPROPERTY(BlueprintReadOnly, Category = "Lyra|Health", Meta = (HideFromModifiers, AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, Category = "Lyra|Health", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData Health;
 
 	// The current max health attribute.  Max health is an attribute since gameplay effects can modify it.

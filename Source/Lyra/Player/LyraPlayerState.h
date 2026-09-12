@@ -7,6 +7,9 @@
 #include "GameFramework/PlayerState.h"
 #include "LyraPlayerState.generated.h"
 
+DECLARE_LOG_CATEGORY_EXTERN(LogLyraPlayerState, Log, All);
+
+class ULyraPawnData;
 class ULyraAbilitySystemComponent;
 
 /**
@@ -18,11 +21,19 @@ class LYRA_API ALyraPlayerState : public APlayerState, public IAbilitySystemInte
 	GENERATED_BODY()
 	
 public:
+	template <class T>
+	const T* GetPawnData() const { return Cast<T>(PawnData); }
+
+	void SetPawnData(const ULyraPawnData* InPawnData);
+
 	//~IAbilitySystemInterface interface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~End of IAbilitySystemInterface interface
 
 private:
+	UPROPERTY()
+	TObjectPtr<const ULyraPawnData> PawnData;
+
 	// The ability system component sub-object used by player characters.
 	UPROPERTY(VisibleAnywhere, Category = "Lyra|PlayerState")
 	TObjectPtr<ULyraAbilitySystemComponent> AbilitySystemComponent;

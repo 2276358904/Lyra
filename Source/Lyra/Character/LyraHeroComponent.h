@@ -23,7 +23,7 @@ public:
 	static const FName NAME_ActorFeatureName;
 	
 public:
-	ULyraHeroComponent(const FObjectInitializer& ObjectInitializer);
+	ULyraHeroComponent(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	//~ Begin UPawnComponent interface
 	virtual void OnRegister() override;

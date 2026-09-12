@@ -29,5 +29,5 @@ class LYRA_API ULyraAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 	
 public:
-	ULyraAttributeSet(const FObjectInitializer& ObjectInitializer);
+	ULyraAttributeSet(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 };

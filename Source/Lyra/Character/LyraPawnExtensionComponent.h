@@ -24,7 +24,7 @@ public:
 	static const FName NAME_ActorFeatureName;
 
 public:
-	ULyraPawnExtensionComponent(const FObjectInitializer& ObjectInitializer);
+	ULyraPawnExtensionComponent(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	/** Gets the pawn data, which is used to specify pawn properties in data */
 	template <class T>
@@ -33,9 +33,39 @@ public:
 	/** Sets the current pawn data */
 	void SetPawnData(const ULyraPawnData* InPawnData);
 
-	//~IGameFrameworkInitStateInterface interface
+	/** Should be called by the owning pawn to become the avatar of the ability system. */
+	void InitializeAbilitySystem(ULyraAbilitySystemComponent* InASC, AActor* InOwnerActor);
+
+	/** Should be called by the owning pawn to remove itself as the avatar of the ability system. */
+	void UninitializeAbilitySystem();
+
+	/** Should be called by the owning pawn when the pawn's controller changes. */
+	void HandleControllerChanged();
+
+	/** Should be called by the owning pawn when the input component is setup. */
+	void SetupPlayerInputComponent();
+
+	/** Register with the OnAbilitySystemInitialized delegate and broadcast if our pawn has been registered with the ability system component */
+	void OnAbilitySystemInitialized_RegisterAndCall(FSimpleMulticastDelegate::FDelegate Delegate);
+
+	/** Register with the OnAbilitySystemUninitialized delegate fired when our pawn is removed as the ability system's avatar actor */
+	void OnAbilitySystemUninitialized_Register(FSimpleMulticastDelegate::FDelegate Delegate);
+
+	//~ Begin IGameFrameworkInitStateInterface interface
+	virtual FName GetFeatureName() const override { return NAME_ActorFeatureName; }
+
+	virtual bool CanChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState) const override;
+	
+	virtual void HandleChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState) override;
+	
+	virtual void OnActorInitStateChanged(const FActorInitStateChangedParams& Params) override;
+
+	virtual void CheckDefaultInitialization() override;
+	//~ End IGameFrameworkInitStateInterface interface
+
+	//~ IGameFrameworkInitStateInterface interface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	//~End IGameFrameworkInitStateInterface interface
+	//~ End IGameFrameworkInitStateInterface interface
 
 protected:
 	/** Pawn data used to create the pawn. Specified from a spawn function or on a placed instance. */
@@ -45,4 +75,10 @@ protected:
 	/** Pointer to the ability system component that is cached for convenience. */
 	UPROPERTY()
 	TObjectPtr<ULyraAbilitySystemComponent> AbilitySystemComponent;
+
+	/** Delegate fired when our pawn becomes the ability system's avatar actor */
+	FSimpleMulticastDelegate OnAbilitySystemInitialized;
+
+	/** Delegate fired when our pawn is removed as the ability system's avatar actor */
+	FSimpleMulticastDelegate OnAbilitySystemUninitialized;
 };

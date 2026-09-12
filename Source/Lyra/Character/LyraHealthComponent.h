@@ -53,7 +53,7 @@ public:
 	FLyraHealth_DeathEvent OnDeathFinished;
 
 public:
-	ULyraHealthComponent(const FObjectInitializer& ObjectInitializer);
+	ULyraHealthComponent(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	// Initialize the component using an ability system component.
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Health")

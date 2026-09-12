@@ -8,6 +8,7 @@
 
 class APawn;
 class ULyraInputConfig;
+class ULyraAbilitySet;
 
 /**
  * Non-mutable data asset that contains properties used to define a pawn.
@@ -22,7 +23,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|Pawn")
 	TSubclassOf<APawn> PawnClass;
 
+	// Ability sets to grant to this pawn's ability system.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|Abilities")
+	TArray<TObjectPtr<ULyraAbilitySet>> AbilitySets;
+
 	// Input configuration used by player controlled pawns to create input mappings and bind input actions.
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|Input")
 	TObjectPtr<ULyraInputConfig> InputConfig;
+
+public:
+	ULyraPawnData(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 };

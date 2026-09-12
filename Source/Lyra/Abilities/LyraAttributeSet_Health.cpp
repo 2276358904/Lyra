@@ -11,7 +11,7 @@
 
 ULyraAttributeSet_Health::ULyraAttributeSet_Health(const FObjectInitializer& ObjectInitializer):
 	Super(ObjectInitializer),
-	Health(100.0f),
+	Health(0.0f),
 	MaxHealth(100.0f),
 	bOutOfHealth(false)
 {

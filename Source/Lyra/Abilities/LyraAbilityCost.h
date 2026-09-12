@@ -22,7 +22,7 @@ class LYRA_API ULyraAbilityCost : public UObject
 	GENERATED_BODY()
 	
 public:
-	ULyraAbilityCost(const FObjectInitializer& ObjectInitializer);
+	ULyraAbilityCost(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	/** Checks if we can afford this cost */
 	virtual bool CheckCost(const ULyraGameplayAbility* Ability, const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, FGameplayTagContainer* OptionalRelevantTags) const;

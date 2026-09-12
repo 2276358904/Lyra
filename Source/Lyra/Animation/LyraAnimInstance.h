@@ -16,7 +16,7 @@ class LYRA_API ULyraAnimInstance : public UAnimInstance
 	GENERATED_BODY()
 	
 public:
-	ULyraAnimInstance(const FObjectInitializer& ObjectInitializer);
+	ULyraAnimInstance(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	void InitializeWithAbilitySystem(UAbilitySystemComponent* ASC);
 

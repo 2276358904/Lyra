@@ -113,18 +113,50 @@ void ULyraHeroComponent::HandleChangeInitState(UGameFrameworkComponentManager* M
 {
 	if (CurrentState == LyraGameplayTags::Gameplay_InitState_DataAvailable && DesiredState == LyraGameplayTags::Gameplay_InitState_DataInitialized)
 	{
-
+		APawn* Pawn = GetPawn<APawn>();
+		ALyraPlayerState* PlayerState = GetPlayerState<ALyraPlayerState>();
+		if (!Pawn || !PlayerState)
+		{
+			return;
+		}
+		const bool bIsLocallyControlled = Pawn->IsLocallyControlled();
+		const ULyraPawnData* PawnData = nullptr;
+		ULyraPawnExtensionComponent* PawnExtensionComponent = Pawn->FindComponentByClass<ULyraPawnExtensionComponent>();
+		if (PawnExtensionComponent)
+		{
+			PawnData = PawnExtensionComponent->GetPawnData<ULyraPawnData>();
+			// The player state holds the persistent data for this player (state that persists across deaths and multiple pawns).
+			// The ability system component and attribute sets live on the player state.
+			ULyraAbilitySystemComponent* AbilitySystemComponent = Cast<ULyraAbilitySystemComponent>(PlayerState->GetAbilitySystemComponent());
+			PawnExtensionComponent->InitializeAbilitySystem(AbilitySystemComponent, PlayerState);
+		}
+		ALyraPlayerController* PlayerController = GetController<ALyraPlayerController>();
+		if (PlayerController && Pawn->InputComponent)
+		{
+			InitializePlayerInput(Pawn->InputComponent);
+		}
 	}
 }
 
 void ULyraHeroComponent::OnActorInitStateChanged(const FActorInitStateChangedParams& Params)
 {
-
+	if (Params.FeatureName == ULyraPawnExtensionComponent::NAME_ActorFeatureName && Params.FeatureState == LyraGameplayTags::Gameplay_InitState_DataInitialized)
+	{
+		// If the extension component says all all other components are initialized, try to progress to next state
+		CheckDefaultInitialization();
+	}
 }
 
 void ULyraHeroComponent::CheckDefaultInitialization()
 {
-
+	const TArray<FGameplayTag> StateChain = { 
+		LyraGameplayTags::Gameplay_InitState_Spawned, 
+		LyraGameplayTags::Gameplay_InitState_DataAvailable,
+		LyraGameplayTags::Gameplay_InitState_DataInitialized,
+		LyraGameplayTags::Gameplay_InitState_GameplayReady
+	};
+	// This will try to progress from spawned (which is only set in BeginPlay) through the data initialization stages until it gets to gameplay ready
+	ContinueInitStateChain(StateChain);
 }
 
 void ULyraHeroComponent::InitializePlayerInput(UInputComponent* PlayerInputComponent)

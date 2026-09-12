@@ -15,7 +15,7 @@ class LYRA_API ULyraCharacterMovementComponent : public UCharacterMovementCompon
 	GENERATED_BODY()
 	
 public:
-	ULyraCharacterMovementComponent(const FObjectInitializer& ObjectInitializer);
+	ULyraCharacterMovementComponent(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	//~UMovementComponent interface
 	virtual FRotator GetDeltaRotation(float DeltaTime) const override;

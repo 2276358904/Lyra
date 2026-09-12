@@ -29,5 +29,5 @@ public:
 	// Returns the loaded game data.
 	static const ULyraGameData& Get();
 
-	ULyraGameData(const FObjectInitializer& ObjectInitializer);
+	ULyraGameData(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 };

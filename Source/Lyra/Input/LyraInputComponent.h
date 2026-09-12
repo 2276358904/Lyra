@@ -19,7 +19,7 @@ class LYRA_API ULyraInputComponent : public UEnhancedInputComponent
 	GENERATED_BODY()
 	
 public:
-	ULyraInputComponent(const FObjectInitializer& ObjectInitializer);
+	ULyraInputComponent(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	void AddInputMappings(const ULyraInputConfig* InputConfig, UEnhancedInputLocalPlayerSubsystem* InputSubsystem) const;
 
