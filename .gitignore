@@ -3,9 +3,9 @@
 ################################################################################
 
 /.vs
+/.vsconfig
 /Saved
 /Binaries
 /Intermediate
-/.vsconfig
 /Platforms
-/RawContent/Characters/Heros
+/RawContent

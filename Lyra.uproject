@@ -12,7 +12,9 @@
 				"ModularGameplay",
 				"Engine",
 				"CoreUObject",
-				"GameplayAbilities"
+				"GameplayAbilities",
+				"GameFeatures",
+				"DeveloperSettings"
 			]
 		},
 		{
@@ -36,6 +38,10 @@
 		},
 		{
 			"Name": "GameplayAbilities",
+			"Enabled": true
+		},
+		{
+			"Name": "GameFeatures",
 			"Enabled": true
 		}
 	]
