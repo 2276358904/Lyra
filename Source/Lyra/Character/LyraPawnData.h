@@ -9,6 +9,7 @@
 class APawn;
 class ULyraInputConfig;
 class ULyraAbilitySet;
+class ULyraCameraMode;
 
 /**
  * Non-mutable data asset that contains properties used to define a pawn.
@@ -30,6 +31,10 @@ public:
 	// Input configuration used by player controlled pawns to create input mappings and bind input actions.
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|Input")
 	TObjectPtr<ULyraInputConfig> InputConfig;
+
+	// Default camera mode used by player controlled pawns.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|Camera")
+	TSubclassOf<ULyraCameraMode> CameraModeClass;
 
 public:
 	ULyraPawnData(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());

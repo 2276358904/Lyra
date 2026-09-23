@@ -7,13 +7,12 @@
 #include "GameFramework/PlayerState.h"
 #include "LyraPlayerState.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogLyraPlayerState, Log, All);
-
 class ULyraPawnData;
 class ULyraAbilitySystemComponent;
+class ULyraExperienceDefinition;
 
 /**
- * 
+ * Base player state class used by this project.
  */
 UCLASS()
 class LYRA_API ALyraPlayerState : public APlayerState, public IAbilitySystemInterface
@@ -21,10 +20,16 @@ class LYRA_API ALyraPlayerState : public APlayerState, public IAbilitySystemInte
 	GENERATED_BODY()
 	
 public:
+	ALyraPlayerState(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
 	template <class T>
 	const T* GetPawnData() const { return Cast<T>(PawnData); }
 
 	void SetPawnData(const ULyraPawnData* InPawnData);
+
+	//~APlayerState interface
+	virtual void PostInitializeComponents() override;
+	//~End of APlayerState interface
 
 	//~IAbilitySystemInterface interface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
@@ -37,4 +42,7 @@ private:
 	// The ability system component sub-object used by player characters.
 	UPROPERTY(VisibleAnywhere, Category = "Lyra|PlayerState")
 	TObjectPtr<ULyraAbilitySystemComponent> AbilitySystemComponent;
+
+private:
+	void OnExperienceLoaded(const ULyraExperienceDefinition* CurrentExperience);
 };

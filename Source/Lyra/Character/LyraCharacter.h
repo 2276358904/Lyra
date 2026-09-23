@@ -9,7 +9,14 @@
 
 class ULyraHealthComponent;
 class ULyraPawnExtensionComponent;
+class ULyraExperienceDefinition;
+class ULyraCameraComponent;
 
+/**
+ * The base character pawn class used by this project.
+ * Responsible for sending events to pawn components.
+ * New behavior should be added via pawn components when possible.
+ */
 UCLASS()
 class ALyraCharacter : public ACharacter, public IAbilitySystemInterface
 {
@@ -25,6 +32,12 @@ public:
 	//~End of IAbilitySystemInterface interface
 
 	//~ACharacter interface
+	virtual void BeginPlay() override;
+
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	virtual void PostInitializeComponents() override;
+
 	virtual void PossessedBy(AController* NewController) override;
 
 	virtual void UnPossessed() override;
@@ -45,6 +58,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lyra|Character")
 	TObjectPtr<ULyraPawnExtensionComponent> PawnExtComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lyra|Character")
+	TObjectPtr<ULyraCameraComponent> CameraComponent;
+
 protected:
 	// Begins the death sequence for the character (disables collision, disables movement, etc...)
 	UFUNCTION()
@@ -62,5 +78,7 @@ private:
 	void DisableMovementAndCollision();
 
 	void UninitAndDestroy();
+
+	void OnExperienceLoaded(const ULyraExperienceDefinition* CurrentExperience);
 };
 

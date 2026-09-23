@@ -3,9 +3,13 @@
 #include "Character/LyraCharacter.h"
 #include "LyraGameplayTags.h"
 #include "Abilities/LyraAbilitySystemComponent.h"
+#include "Camera/LyraCameraComponent.h"
 #include "Character/LyraCharacterMovementComponent.h"
 #include "Character/LyraHealthComponent.h"
 #include "Character/LyraPawnExtensionComponent.h"
+#include "GameModes/LyraExperienceManagerComponent.h"
+#include "GameModes/LyraExperienceDefinition.h"
+#include "System/LyraAssetManager.h"
 
 #include "Components/CapsuleComponent.h"
 
@@ -19,6 +23,9 @@ ALyraCharacter::ALyraCharacter(const FObjectInitializer& ObjectInitializer):
 	PawnExtComponent = CreateDefaultSubobject<ULyraPawnExtensionComponent>(TEXT("PawnExtension"));
 	PawnExtComponent->OnAbilitySystemInitialized_RegisterAndCall(FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &ThisClass::OnAbilitySystemInitialized));
 	PawnExtComponent->OnAbilitySystemUninitialized_Register(FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &ThisClass::OnAbilitySystemUninitialized));
+
+	CameraComponent = CreateDefaultSubobject<ULyraCameraComponent>(TEXT("CameraComponent"));
+	CameraComponent->SetRelativeLocation(FVector(-300.0f, 0.0f, 75.0f));
 }
 
 void ALyraCharacter::ToggleCrouch()
@@ -37,6 +44,29 @@ void ALyraCharacter::ToggleCrouch()
 UAbilitySystemComponent* ALyraCharacter::GetAbilitySystemComponent() const
 {
 	return PawnExtComponent->GetAbilitySystemComponent();
+}
+
+void ALyraCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void ALyraCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+}
+
+void ALyraCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	UWorld* World = GetWorld();
+	if (World && World->IsGameWorld() && World->GetNetMode() != NM_Client)
+	{
+		AGameStateBase* GameState = World->GetGameState();
+		ULyraExperienceManagerComponent* ExperienceComponent = GameState->FindComponentByClass<ULyraExperienceManagerComponent>();
+		ExperienceComponent->CallOrRegister_OnExperienceLoaded(FOnLyraExperienceLoaded::FDelegate::CreateUObject(this, &ThisClass::OnExperienceLoaded));
+	}
 }
 
 void ALyraCharacter::PossessedBy(AController* NewController)
@@ -126,6 +156,16 @@ void ALyraCharacter::UninitAndDestroy()
 		SetLifeSpan(0.1f);
 	}
 	SetActorHiddenInGame(true);
+}
+
+void ALyraCharacter::OnExperienceLoaded(const ULyraExperienceDefinition* CurrentExperience)
+{
+	const ULyraPawnData* PawnData = CurrentExperience->DefaultPawnData.Get();
+	if (!PawnData)
+	{
+		PawnData = ULyraAssetManager::Get().GetDefaultPawnData();
+	}
+	PawnExtComponent->SetPawnData(PawnData);
 }
 
 

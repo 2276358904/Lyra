@@ -8,7 +8,7 @@
 ALyraPlayerController::ALyraPlayerController(const FObjectInitializer& ObjectInitializer):
 	Super(ObjectInitializer)
 {
-
+	
 }
 
 void ALyraPlayerController::SetIsAutoRunning(const bool bEnabled)
@@ -34,6 +34,11 @@ void ALyraPlayerController::PostProcessInput(const float DeltaTime, const bool b
 	{
 		AbilitySystemComponent->ProcessAbilityInput(DeltaTime, bGamePaused);
 	}
+}
+
+void ALyraPlayerController::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
 }
 
 void ALyraPlayerController::OnStartAutoRun()

@@ -6,13 +6,17 @@
 #include "Abilities/LyraAbilitySystemComponent.h"
 
 #include "Components/GameFrameworkComponentManager.h"
+#include "Net/UnrealNetwork.h"
 
 const FName ULyraPawnExtensionComponent::NAME_ActorFeatureName("PawnExtension");
 
 ULyraPawnExtensionComponent::ULyraPawnExtensionComponent(const FObjectInitializer& ObjectInitializer):
 	Super(ObjectInitializer)
 {
+	SetIsReplicatedByDefault(true);
 
+	PawnData = nullptr;
+	AbilitySystemComponent = nullptr;
 }
 
 void ULyraPawnExtensionComponent::SetPawnData(const ULyraPawnData* InPawnData)
@@ -27,6 +31,7 @@ void ULyraPawnExtensionComponent::SetPawnData(const ULyraPawnData* InPawnData)
 		return;
 	}
 	PawnData = InPawnData;
+	//Pawn->ForceNetUpdate();
 	CheckDefaultInitialization();
 }
 
@@ -127,6 +132,36 @@ void ULyraPawnExtensionComponent::OnAbilitySystemUninitialized_Register(FSimpleM
 	}
 }
 
+void ULyraPawnExtensionComponent::OnRegister()
+{
+	Super::OnRegister();
+	// Register with the init state system early, this will only work if this is a game world
+	RegisterInitStateFeature();
+}
+
+void ULyraPawnExtensionComponent::BeginPlay()
+{
+	Super::BeginPlay();
+	// Listen for changes to all features
+	BindOnActorInitStateChanged(NAME_None, FGameplayTag(), false);
+	// Notifies state manager that we have spawned, then try rest of default initialization
+	TryToChangeInitState(LyraGameplayTags::Gameplay_InitState_Spawned);
+	CheckDefaultInitialization();
+}
+
+void ULyraPawnExtensionComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	UnregisterInitStateFeature();
+	Super::EndPlay(EndPlayReason);
+}
+
+void ULyraPawnExtensionComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ULyraPawnExtensionComponent, PawnData);
+}
+
 bool ULyraPawnExtensionComponent::CanChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState) const
 {
 	APawn* Pawn = GetPawn<APawn>();
@@ -180,9 +215,12 @@ void ULyraPawnExtensionComponent::HandleChangeInitState(UGameFrameworkComponentM
 void ULyraPawnExtensionComponent::OnActorInitStateChanged(const FActorInitStateChangedParams& Params)
 {
 	// If another feature is now in DataAvailable, see if we should transition to DataInitialized
-	if (Params.FeatureName != NAME_ActorFeatureName && Params.FeatureState == LyraGameplayTags::Gameplay_InitState_DataAvailable)
+	if (Params.FeatureName != NAME_ActorFeatureName)
 	{
-		CheckDefaultInitialization();
+		if (Params.FeatureState == LyraGameplayTags::Gameplay_InitState_DataInitialized)
+		{
+			CheckDefaultInitialization();
+		}
 	}
 }
 
@@ -203,4 +241,9 @@ void ULyraPawnExtensionComponent::CheckDefaultInitialization()
 UAbilitySystemComponent* ULyraPawnExtensionComponent::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
+}
+
+void ULyraPawnExtensionComponent::OnRep_PawnData()
+{
+	CheckDefaultInitialization();
 }

@@ -25,6 +25,8 @@ public:
 
 	//~APlayerController interface
 	virtual void PostProcessInput(const float DeltaTime, const bool bGamePaused) override;
+
+	virtual void PostInitializeComponents() override;
 	//~End of APlayerController interface
 
 private:

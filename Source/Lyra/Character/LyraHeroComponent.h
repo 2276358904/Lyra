@@ -7,13 +7,16 @@
 #include "Components/GameFrameworkInitStateInterface.h"
 #include "LyraHeroComponent.generated.h"
 
+class ULyraCameraMode;
+
 struct FLyraMappableConfigPair;
 struct FInputActionValue;
 
 /**
- * 
+ * Component that sets up input and camera handling for player controlled pawns (or bots that simulate players).
+ * This depends on a PawnExtensionComponent to coordinate initialization.
  */
-UCLASS()
+UCLASS(Blueprintable, Meta = (BlueprintSpawnableComponent))
 class LYRA_API ULyraHeroComponent : public UPawnComponent, public IGameFrameworkInitStateInterface
 {
 	GENERATED_BODY()
@@ -54,8 +57,14 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TArray<FLyraMappableConfigPair> DefaultInputConfigs;
 
+	/** Camera mode set by an ability. */
+	UPROPERTY()
+	TSubclassOf<ULyraCameraMode> AbilityCameraMode;
+
 protected:
 	virtual void InitializePlayerInput(UInputComponent* PlayerInputComponent);
+
+	TSubclassOf<ULyraCameraMode> DetermineCameraMode() const;
 
 private:
 	void OnInputMove(const FInputActionValue& InputActionValue);

@@ -4,6 +4,8 @@
 #include "Character/LyraHeroComponent.h"
 #include "LyraGameplayTags.h"
 #include "Abilities/LyraAbilitySystemComponent.h"
+#include "Camera/LyraCameraComponent.h"
+#include "Camera/LyraCameraMode.h"
 #include "Character/LyraCharacter.h"
 #include "Character/LyraPawnData.h"
 #include "Character/LyraPawnExtensionComponent.h"
@@ -23,7 +25,7 @@ const FName ULyraHeroComponent::NAME_ActorFeatureName("Hero");
 ULyraHeroComponent::ULyraHeroComponent(const FObjectInitializer& ObjectInitializer):
 	Super(ObjectInitializer)
 {
-
+	AbilityCameraMode = nullptr;
 }
 
 void ULyraHeroComponent::OnRegister()
@@ -135,6 +137,11 @@ void ULyraHeroComponent::HandleChangeInitState(UGameFrameworkComponentManager* M
 		{
 			InitializePlayerInput(Pawn->InputComponent);
 		}
+		ULyraCameraComponent* CameraComponent = Pawn->FindComponentByClass<ULyraCameraComponent>();
+		if (bIsLocallyControlled && PawnData && CameraComponent)
+		{
+			CameraComponent->DetermineCameraModeDelegate.BindUObject(this, &ThisClass::DetermineCameraMode);
+		}
 	}
 }
 
@@ -204,7 +211,7 @@ void ULyraHeroComponent::InitializePlayerInput(UInputComponent* PlayerInputCompo
 		return;
 	}
 	const ULyraInputConfig* InputConfig = PawnData->InputConfig;
-	if (InputConfig)
+	if (!InputConfig)
 	{
 		return;
 	}
@@ -214,6 +221,9 @@ void ULyraHeroComponent::InitializePlayerInput(UInputComponent* PlayerInputCompo
 	ULyraInputComponent* InputComponent = Cast<ULyraInputComponent>(PlayerInputComponent);
 	if (InputComponent)
 	{
+		// Add the key mappings that may have been set by the player
+		InputComponent->AddInputMappings(InputConfig, Subsystem);
+
 		InputComponent->BindNativeAction(InputConfig, LyraGameplayTags::Gameplay_Input_Move, ETriggerEvent::Triggered, this, &ThisClass::OnInputMove, /*bLogIfNotFound=*/ false);
 		InputComponent->BindNativeAction(InputConfig, LyraGameplayTags::Gameplay_Input_Look, ETriggerEvent::Triggered, this, &ThisClass::OnInputLook, /*bLogIfNotFound=*/ false);
 		InputComponent->BindNativeAction(InputConfig, LyraGameplayTags::Gameplay_Input_Crouch, ETriggerEvent::Triggered, this, &ThisClass::OnInputCrouch, /*bLogIfNotFound=*/ false);
@@ -224,6 +234,27 @@ void ULyraHeroComponent::InitializePlayerInput(UInputComponent* PlayerInputCompo
 		TArray<uint32> BindHandles;
 		InputComponent->BindAbilityActions(InputConfig, this, &ThisClass::OnAbilityInputTagPressed, &ThisClass::OnAbilityInputTagReleased, /*out*/ BindHandles);
 	}
+}
+
+TSubclassOf<ULyraCameraMode> ULyraHeroComponent::DetermineCameraMode() const
+{
+	if (AbilityCameraMode)
+	{
+		return AbilityCameraMode;
+	}
+	const APawn* Pawn = GetPawn<APawn>();
+	if (!Pawn)
+	{
+		return nullptr;
+	}
+	if (ULyraPawnExtensionComponent* PawnExtComp = Pawn->FindComponentByClass<ULyraPawnExtensionComponent>())
+	{
+		if (const ULyraPawnData* PawnData = PawnExtComp->GetPawnData<ULyraPawnData>())
+		{
+			return PawnData->CameraModeClass;
+		}
+	}
+	return nullptr;
 }
 
 void ULyraHeroComponent::OnInputMove(const FInputActionValue& InputActionValue)

@@ -12,7 +12,8 @@ class ULyraPawnData;
 class ULyraAbilitySystemComponent;
 
 /**
- * 
+ * Component that adds functionality to all Pawn classes so it can be used for characters/vehicles/etc.
+ * This coordinates the initialization of other components.
  */
 UCLASS()
 class LYRA_API ULyraPawnExtensionComponent : public UPawnComponent, public IGameFrameworkInitStateInterface, public IAbilitySystemInterface
@@ -51,6 +52,14 @@ public:
 	/** Register with the OnAbilitySystemUninitialized delegate fired when our pawn is removed as the ability system's avatar actor */
 	void OnAbilitySystemUninitialized_Register(FSimpleMulticastDelegate::FDelegate Delegate);
 
+	//~ Begin UPawnComponent interface
+	virtual void OnRegister() override;
+
+	virtual void BeginPlay() override;
+
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	//~ End UPawnComponent interface 
+
 	//~ Begin IGameFrameworkInitStateInterface interface
 	virtual FName GetFeatureName() const override { return NAME_ActorFeatureName; }
 
@@ -69,7 +78,7 @@ public:
 
 protected:
 	/** Pawn data used to create the pawn. Specified from a spawn function or on a placed instance. */
-	UPROPERTY(EditInstanceOnly, Category = "Lyra|Pawn")
+	UPROPERTY(EditInstanceOnly, ReplicatedUsing = OnRep_PawnData, Category = "Lyra|Pawn")
 	TObjectPtr<const ULyraPawnData> PawnData;
 
 	/** Pointer to the ability system component that is cached for convenience. */
@@ -81,4 +90,8 @@ protected:
 
 	/** Delegate fired when our pawn is removed as the ability system's avatar actor */
 	FSimpleMulticastDelegate OnAbilitySystemUninitialized;
+
+protected:
+	UFUNCTION()
+	void OnRep_PawnData();
 };

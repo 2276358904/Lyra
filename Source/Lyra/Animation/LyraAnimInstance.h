@@ -8,7 +8,7 @@
 #include "LyraAnimInstance.generated.h"
 
 /**
- * 
+ * The base game animation instance class used by this project.
  */
 UCLASS()
 class LYRA_API ULyraAnimInstance : public UAnimInstance

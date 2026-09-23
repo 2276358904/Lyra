@@ -24,6 +24,7 @@ public class Lyra : ModuleRules
                 "GameplayTags",
                 "GameplayAbilities",
                 "GameplayTasks",
+                "GameFeatures",
                 "HeadMountedDisplay",
                 "InputCore", 
                 "ModularGameplay",
